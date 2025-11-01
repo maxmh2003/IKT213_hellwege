@@ -41,12 +41,20 @@ def hsv (image):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def hue_shifted (image,emptyPictureArray,hue):
+def hue_shifted(image, emptyPictureArray, hue):
+
     emptyPictureArray[:] = image[:]
-    emptyPictureArray = np.clip(emptyPictureArray + hue, 0, 255).astype(np.uint8)
+    tmp = emptyPictureArray.astype(np.int16) + int(hue)
+    tmp = np.clip(tmp, 0, 255).astype(np.uint8)
+
+    emptyPictureArray[:] = tmp
+
     cv2.imshow("Hue shifted", emptyPictureArray)
+    cv2.imwrite("hue_shifted_image.png", emptyPictureArray)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
 def smoothing(image):
     dst = cv2.GaussianBlur(image,(15,15),cv2.BORDER_DEFAULT)
     cv2.imshow("Gaussian smoothing", dst)
@@ -91,11 +99,11 @@ def main ():
 
    # hsv(image)
 
-   # hue_shifted(image_rgb, emptyPictureArray, 50)
+    hue_shifted(image, emptyPictureArray, 50)
 
    # smoothing(image)
 
-    rotation(image,rotation_angle=180)
+   # rotation(image,rotation_angle=180)
 
 
 
